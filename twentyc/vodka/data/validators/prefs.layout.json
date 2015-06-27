@@ -1,0 +1,219 @@
+{
+
+  "layout" : {
+    "type" : "dict",
+    "data" : {
+
+      "name" : "string_label",
+
+      "layout_type" : "string",
+      
+      "panes" : {
+        "type" : "list",
+        "max" : 20,
+        "label" : "Panes",
+        "data" : {
+          "type" : "dict",
+          "require" : "all",
+          "data" : {
+            "index" : "int_pos",
+            "preset" : "int_pos",
+            "flags" : "int"
+          }
+        }
+      },
+
+      "windows" : {
+        "label" : "Windows",
+        "type" : "list",
+        "max" : 100,
+        "data" : {
+          "label" : "Window",
+          "type" : "dict",
+          "require" : ["height","grid","pane","id"],
+          "data" : {
+            "opt" : {
+              "type" : "dict",
+              "validator" : "window-{id}"
+            },
+            "height" : "int_pos",
+            "width" : "int_pos",
+            "grid" : "int_pos",
+            "pane" : "int_pos",
+            "x" : "int",
+            "y" : "int",
+            "color_theme" : "string_label",
+            "id" : "string"
+          }
+        }
+      }
+
+
+
+    }
+  },
+
+
+  "window-tabbed" : {
+    "data" : {
+      "content_setups": {
+        "type" : "dict_list",
+        "max" : 10,
+        "data" : {
+          "type" : "dict",
+          "validator" : "window-datatable"
+        }
+      }
+    }
+  },
+
+  "window-datatable" : {
+    "data" : {
+      "content_setups" : {
+        "type" : "dict_list",
+        "max" : 10,
+        "data" : {
+          "type" : "dict",
+          "validator" : "window-datatable"
+        }
+      },
+      "version" : "int",
+      "container_width" : "intpos",
+      "container_height" : "intpos",
+      "search" : {
+        "type" : "dict",
+        "data" : {
+          "filter_action" : "intpos",
+          "filters" : {
+            "type" : "list",
+            "max" : 100,
+            "data" : {
+              "type" : "dict",
+              "data" : {
+                "column" : "string_label",
+                "value" : "string",
+                "highlight" : "string",
+                "hl_enabled" : "bool",
+                "f_enabled" : "bool"
+              }
+            }
+          }
+        }
+      },
+      "sort" : {
+        "type" : "dict",
+        "data" : {
+          "locked" : "bool",
+          "column" : "string_label",
+          "manual" : "bool",
+          "key" : "string_label",
+          "manual_order": {
+            "type" : "list",
+            "max" : 1000,
+            "data" : {
+              "type" : "any",
+              "string" : {
+                "max" : 50
+              },
+              "int" : { "_":1 },
+              "float" : { "_":1 }
+            }
+          },
+          "dir" : "int_pos"
+        }
+      },
+      "filters" : {
+        "type" : "list",
+        "max" : 1000,
+        "data" : {
+          "type" : "list",
+          "max" : 3,
+          "data" : {
+            "type" : "any",
+            "label" : "Filter",
+            "string" : { "max" : 50 },
+            "int" : {},
+            "float" : {}
+          }
+        }
+      },
+      "color_theme" : "string_label",
+      "groups" : {
+        "type" : "list",
+        "max" : 100,
+        "data" : {
+          "type" : "list",
+          "min" : 2,
+          "max" : 2,
+          "data" : [
+            {
+              "type" : "string_label",
+              "label" : "Group Name"
+            },
+            {
+              "type" : "list",
+              "max" : 100,
+              "data" : {
+                "type" : "any",
+                "label" : "Group Member",
+                "string" : {
+                  "max" : 50
+                },
+                "int" : {},
+                "float" : {}
+              }
+            }
+          ]
+        }
+      },
+      "reverse_filters" : "bool",
+      "columns" : {
+        "type" : "list",
+        "max" : 100,
+        "data" : {
+          "type" : "list",
+          "min" : 2,
+          "max" : 2,
+          "data" : [
+            {
+              "type" : "list",
+              "data" : {
+                "type" : "string_label",
+                "label" : "Column ID"
+              },
+              "max" : 2,
+              "min" : 1
+            },
+            "float"
+          ]
+        }
+      }
+    }
+  },
+
+  "__share__layout" : {
+    "name" : true,
+    "layout_type" : true,
+    "panes" : true,
+    "windows" : {
+      "x" : true,
+      "y" : true,
+      "width" : true,
+      "height" : true,
+      "grid" : true,
+      "pane" : true,
+      "id" : true,
+      "opt" : "__share__window-{id}"
+    } 
+  },
+
+  "__share__window-datatable" : {
+    "sort" : true,
+    "columns" : true,
+    "reverse_filters" : true,
+    "color_theme" : true,
+    "groups" : true
+  }
+
+
+}

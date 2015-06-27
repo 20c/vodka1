@@ -1,0 +1,19 @@
+{
+  "color_theme" : {
+    "type" : "dict_list",
+    "max" : 50,
+    "data" : {
+      "type" : "any",
+      "string" : { "max" : 20 },
+      "dict_list": {
+        "max" : 100,
+        "data" : {
+          "type" : "string",
+          "max" : 20 
+        }
+      }
+    }
+  },
+
+  "__share__color_theme" : true
+}

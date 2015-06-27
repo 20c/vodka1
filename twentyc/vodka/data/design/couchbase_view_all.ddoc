@@ -1,0 +1,8 @@
+{
+  "_id" : "_design/vodka",
+  "views" : {
+    "all" : {
+      "map" : "function(doc, meta) {  emit(doc._id, 0)}"
+    }
+  }
+}

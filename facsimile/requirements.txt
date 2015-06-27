@@ -1,0 +1,14 @@
+twentyc.tools==0.1.5
+twentyc.database==0.1.2
+twentyc.tmpl==0.1.1
+Babel==0.9.6
+Cheetah==2.4.4
+CouchDB==0.9
+python-daemon==1.6
+qpid-python==0.26
+requests==1.1.0
+simplejson==2.0.9
+sqlparse==0.1.11
+uWSGI==2.0.3
+prettytable==0.7.2
+tornado==3.2

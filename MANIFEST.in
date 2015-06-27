@@ -1,0 +1,3 @@
+recursive-include twentyc/vodka/data *
+include config/VERSION
+include config/requirements.txt

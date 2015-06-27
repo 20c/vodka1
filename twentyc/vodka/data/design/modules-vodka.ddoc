@@ -1,0 +1,75 @@
+{
+  "version" : "22",
+  "_id" : "_design/vodka",
+  "views" : {
+
+    "module_index" : {
+      "map" : "
+function(doc, meta) {
+  if(doc.type == 'vodka_module') {
+    emit(
+      [doc.priority, doc._id], 
+      {
+        namespace : doc.namespace,
+        status : doc.status,
+        name : doc.name,
+        title : doc.title,
+        owner : doc.owner,
+        mobile : doc.mobile,
+        version : doc.version,
+        access_level : doc.access_level,
+        priority : (doc.priority || 0),
+      }
+    )
+  }
+}    
+      "
+    },
+
+    "permission_log" : {
+      "map" : "
+function(doc, meta) {
+  if(doc.type == 'permission_change_log')
+    emit([doc.user_id, doc.time], {
+      id : doc._id,
+      usr : doc.user_id,
+      mod : doc.module_namespace,
+      lvl : doc.level,
+      src : doc.source,
+      rsn : doc.reason,
+      ext : (doc.extra || {}),
+      t : doc.time
+    })
+}
+      "
+    },
+
+    "users_by_pgroup" : {
+      "map" : "
+function(doc, meta) {
+  if(doc.type == 'module_perms') {
+    var i;
+    for(i in (doc.groups||[])) {
+      if(doc.user_id !== null)
+        emit(doc.groups[i], doc.user_id)
+    }
+  }
+}
+      "
+    },
+
+    "permission_groups" : {
+      "map" : "
+function(doc, meta) {
+  if(doc.type == 'permission_group') {
+    emit(doc.name, null)
+  }
+}
+      "
+    }
+  },
+  "options" : {
+    "updateMinChanges" : 0
+  }
+}
+

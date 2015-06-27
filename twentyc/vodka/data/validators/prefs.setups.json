@@ -1,0 +1,10 @@
+{
+  "setups" : {
+    "type" : "dict_list",
+    "max" : 100,
+    "data" : {
+      "type" : "dict",
+      "validator" : "window-{__key}" 
+    }
+  }
+}

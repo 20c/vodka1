@@ -1,0 +1,17 @@
+{
+  
+  "sounds" : {
+    "type" : "dict",
+    "data" : {
+      "order_filled" : "string",
+      "order_failed" : "string",
+      "order_rejected" : "string",
+      "order_invalid" : "string",
+      "order_canceled" : "string",
+      "order_open" : "string"
+    }
+  },
+
+  "__share__sounds" : false 
+
+}

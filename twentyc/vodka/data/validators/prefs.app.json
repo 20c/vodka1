@@ -1,0 +1,263 @@
+{
+
+  "__share__app" : {
+    "update_speed" : true,
+    "disable_ctxmnu" : true,
+    "sticky_navbar" : true,
+    "confirm_flatten" : true,
+    "confirm_cancel_all" : true,
+    "leave_notify" : true,
+    "orderbook" : true,
+    "sound_volume" : true,
+    "sound" : true,
+    "brackets" : true
+  },
+
+  "custom_window_menu_items" : {
+
+    "type" : "any",
+    "dict" : {
+      "require" : "all",
+      "data" : {
+        "id" : "string",
+        "label" : "string_label",
+        "items" : {
+        "type" : "list",
+          "validator" : "custom_window_menu_items"
+        }
+      }
+    },
+    "string" : { "max" : 50 }
+  },
+
+  "mobile_app" : {
+    "update_speed" : {
+      "type" : "int",
+      "min" : 500,
+      "max" : 5000
+    },
+
+    "module_control": {
+      "type" : "dict_list",
+      "max" : 1000,
+      "data" : {
+       "type" : "bool"
+      }
+    },
+
+    "navbar": {
+      "type" : "list",
+      "max" : 50,
+      "data" : {
+        "type" : "string"
+      }
+    },
+
+    "navview": {
+      "type" : "list",
+      "max" : 50,
+      "data" : {
+        "type" : "string"
+      }
+    },
+
+
+    "quoteboard" : {
+      "type" : "dict",
+      "data" : {
+        "chart_period" : "int", 
+        
+        "filters" : {
+          "type" : "list",
+          "max" : 1000,
+          "data" : {
+            "type" : "list",
+            "max" : 3,
+            "data" : {
+              "type" : "any",
+              "label" : "Filter",
+              "string" : { "max" : 50 },
+              "int" : {},
+              "float" : {}
+            }
+          }
+        },
+        
+        "sort" : {
+          "type" : "dict",
+          "data" : {
+            "locked" : "bool",
+            "column" : "string_label",
+            "manual" : "bool",
+            "key" : "string_label",
+            "manual_order": {
+              "type" : "list",
+              "max" : 1000,
+              "data" : {
+                "type" : "any",
+                "string" : {
+                  "max" : 50
+                },
+                "int" : { "_":1 },
+                "float" : { "_":1 }
+              }
+            },
+            "dir" : "int_pos"
+          }
+        },
+
+        "columns" : {
+          "type" : "list",
+          "max" : 100,
+          "data" : {
+            "type" : "list",
+            "min" : 2,
+            "max" : 2,
+            "data" : [
+              {
+                "type" : "list",
+                "data" : {
+                  "type" : "string_label",
+                  "label" : "Column ID"
+                },
+                "max" : 2,
+                "min" : 1
+              },
+              "float"
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  "app" : {
+    "type" : "dict",
+    "data" : {
+      "order_seq" : "int",
+      "default_layout" : "string",
+
+      "dt_align" : "string_label",
+      "dt_overflow" : "string_label",
+      
+      "custom_sounds" : {
+        "type" : "list",
+        "data" : "string"
+      },
+
+      "update_speed" : {
+        "type" : "int",
+        "min" : 10,
+        "max" : 3000
+      },
+
+      "color_themes" : {
+        "type" : "list",
+        "max" : 1000,
+        "data" : "string_label"
+      },
+
+      "module_control": {
+        "type" : "dict_list",
+        "max" : 1000,
+        "data" : {
+          "type" : "bool"
+        }
+      },
+
+      "custom_window_menu" : "bool",
+
+      "custom_window_menu_items" : {
+        "label" : "Custom Window Menu Item",
+        "max" : 100,
+        "type" : "list",
+        "validator" : "custom_window_menu_items"
+      },
+
+      "appdev_apps" : {
+        "label" : "Applications",
+        "type" : "dict_list",
+        "max" : 50,
+        "data" : {
+          "type" : "dict",
+          "require" : "all",
+          "data" : {
+            "name" : "string_label",
+            "load" : "bool"
+          }
+        }
+      },
+
+      "instruments" : {
+        "type" : "list",
+        "max" : 1000,
+        "data" : { "label" : "Symbol", "type" : "string", "max" : 50 }
+      },
+
+      "layout_tabs" : {
+        "type" : "list",
+        "max" : 100,
+        "data" : "string_label"
+      },
+
+      "layouts" : {
+        "type" : "list",
+        "max" : 100,
+        "data" : "string_label"
+      },
+
+      "disable_ctxmnu" : "bool",
+      "layout_locked" : "bool",
+      "sticky_navbar" : "bool",
+      "leave_notify" : "bool",
+      "confirm_flatten" : "bool",
+      "confirm_cancel_all" : "bool",
+      "timezone" : { 
+        "type" : "string",
+        "max" : 6
+      },
+      "sound_volume" : {
+        "type" : "int",
+        "min" : 0,
+        "max" : 100
+      },
+
+      "orderbook" : {
+        "type" : "dict",
+        "data" : {
+          "confirm_order" : "bool",
+          "volume_numbers" : "bool"
+        }
+      },
+
+      "sound" : {
+        "type" : "dict",
+        "data" : {
+          "*" : "bool"
+        }
+      },
+
+      "brackets" : {
+        "type" : "dict_list",
+        "max" : 50,
+        "data" : {
+          "type" : "dict",
+          "require" : "all",
+          "data" : {
+            "stop" : {
+              "type" : "int",
+              "min" : 1 
+            },
+            "target" : {
+              "type" : "int",
+              "min" : 1
+            },
+            "name" : {
+              "type" : "string_label"
+            }
+          }
+        }
+      }
+    }
+  }
+}

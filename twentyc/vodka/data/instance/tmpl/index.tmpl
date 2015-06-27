@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$request.locale.lang" lang="$request.locale.lang">
+<head>
+  <title>$request.selected_brand().get("title")</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+  <!-- App shortcut info -->
+    
+  <meta name="application-name" content="$request.app.config.get('app_link',{}).get('name','Vodka')"/>
+  <meta name="description" content="$request.app.config.get('app_link',{}).get('description','Vodka')"/>
+  <meta name="application-url" content="$request.app.config.get('app_link',{}).get('url','https://'+$request.request.host)"/>
+
+  <link rel="icon" href="/$($request.selected_brand()["name"])-favicon.ico" sizes="128x128" />
+ 
+  <!-- CSS includes -->
+
+  <link rel="stylesheet" type="text/css" href="$sf/base/css/vodka.css" />
+
+  #for $path in $request.ses.app.lib_includes_css:
+  <link rel="stylesheet" type="text/css" href="$sf/$path" />
+  #end for
+
+  <link rel="stylesheet" type="text/css" href="$sfb/css/colors.css" id="colors_css" />
+
+  <!-- JS lib includes -->
+
+  <script type="text/javascript" src="$sf/base/js/locale/$request.locale.lang/twentyc.mo.js"></script> 
+
+  #for $path in $request.ses.app.lib_includes_js:
+  <script type="text/javascript" src="$sf/$path"></script>
+  #end for
+
+  <script type="text/javascript" src="$sfb/js/config.js"></script>
+
+</head>
+
+
+<body>
+
+<div id="layout-master">
+</div>
+
+<script type="text/javascript">
+
+TwentyC.onLoad = function() {
+
+TwentyC.version = '$request.version()';
+TwentyC.lang = '$request.locale.lang';
+TwentyC.sfUrl = '$sf';
+TwentyC.sfBrandUrl = '$sfb';
+TwentyC.clientId = '$request.ses.client_id';
+TwentyC.csrf = '$request.csrf_token()';
+TwentyC.maxUploadSize = $request.ses.app.config.get("server",{}).get("upload_max_size",1000000)
+TwentyC.theme = '$request.ses.theme';
+
+#if not $request.is_production()
+TwentyC.isDev = true;
+#end if
+
+// init modules
+
+$request.js_init_20c_modules();
+
+// load prefs
+
+#set $prefman = $request.ses.pref_manager
+#set $config = $request.ses.app.config
+
+// load all vodka modules
+TwentyC.Layout.ModuleLoading(TwentyC.Modules);
+TwentyC.Modules.LoadAll(function(){
+  TwentyC.Layout.ModuleLoaded(TwentyC.Modules);
+})
+
+// load app prefs
+TwentyC.Layout.ModuleLoading(TwentyC.Preferences);
+TwentyC.Preferences.Load("app", function() {
+  TwentyC.Layout.ModuleLoaded(TwentyC.Preferences)
+  TwentyC.widget.CustomWindowMenu.items = TwentyC.Preferences.Get("app","custom_window_menu_items", []);
+});
+
+// load default color theme 
+TwentyC.Layout.ModuleLoading(TwentyC.ColorThemes);
+TwentyC.ColorThemes.Load("default", function() {
+  TwentyC.Layout.ModuleLoaded(TwentyC.ColorThemes)
+});
+
+TwentyC.WhenReady(function() {
+
+  TwentyC.Modules.LoadModulePerms();
+ 
+#set $sounds = $config.get("sounds",{}) 
+  TwentyC.util.Sound.Init(
+    '/base/swf/', {
+#for $sound,$file in $sounds.items()
+      '$sound' : { 
+        id : '$sound', 
+        url : '/playsound?sound=$sound', 
+        autoPlay : false, 
+        autoLoad: true
+      },
+#end for
+      __blank : { id : '__blank', url : '', autoLoad : false }
+    },
+    $config.get('sound_volume', 100),
+    $request.js_bool($config.get('sound_muted', False))
+  ); 
+
+});
+
+}  
+
+</script>
+
+</body>
+
+</html>
