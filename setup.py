@@ -1,8 +1,8 @@
 
 from setuptools import setup
 
-version = open('config/VERSION').read().strip()
-requirements = open('config/requirements.txt').read().split("\n")
+version = open('facsimile/VERSION').read().strip()
+requirements = open('facsimile/requirements.txt').read().split("\n")
 
 setup(
     name='twentyc.vodka',
