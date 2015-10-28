@@ -644,7 +644,6 @@ class DispatchHandler(BaseHandler):
         raise HTTPError(400)
  
       ctype = environ.get("CONTENT_TYPE","").lower()
-      print "POST/PUT content type %s" % ctype
       if ctype.find('application/x-www-form-urlencoded') != 0 and ctype and not POST_PARSER.get(ctype):
         raise HTTPError(400)
 
