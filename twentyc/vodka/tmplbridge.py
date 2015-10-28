@@ -460,6 +460,14 @@ class TmplBridge:
 
   #############################################################################
 
+  def module_js_path(self, namespace):
+    return "/ui_component/%s/%s" % (
+      namespace,
+      self.ses.app.module_version(namespace)
+    )
+
+  #############################################################################
+
   def include_css_libs(self):
     rv = []
     for path in self.ses.app.lib_includes_css:
