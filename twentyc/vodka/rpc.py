@@ -23,6 +23,9 @@ from validator import ValidationException
 
 from wsgi import webapp, json
 
+def user_friendly_error(msg):
+  return msg
+
 def parse_update_specs(specs):
   if specs[0] == "{":
     try:
