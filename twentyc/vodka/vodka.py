@@ -535,7 +535,7 @@ class VodkaApp(webapp.BaseApp):
         self.lib_includes_js = []
 
       # make sure core lib is always loaded (it's tiny)
-      if "js/twentyc.core.js" not in self.lib_includes_js:
+      if "base/js/twentyc.core.js" not in self.lib_includes_js:
         self.lib_includes_js.insert(0, os.path.join(self.locationConfig.get("js"), "twentyc.core.js"))
       
       self.lib_includes_css = self.config.get("includes",{}).get("css","")
@@ -2193,7 +2193,6 @@ class ClientPool:
           self.pool.pop(i)
           break
 
-        if r.status == 0:
           r.connect()
         #r = self.pool.pop() 
         r = None
@@ -2353,6 +2352,15 @@ class VodkaClient(object):
         mod = module_py_components.get(name)
         if hasattr(mod, 'extend_client'):
           mod.extend_client(self, VodkaClient);
+
+    if app:
+      self.db_prefs = app.db_prefs
+
+  def connect(self, *args, **kwargs):
+    pass
+
+  def disconnect(self, *args, **kwargs):
+    pass
 
 
 ###############################################################################
