@@ -648,7 +648,7 @@ class Session(object):
       raise Exception("Unknown templating engine: %s" % tmpl_type)
 
     if tmpl_code:
-      return engine._render_string(tmpl_code, env=variables)
+      return engine._render_str_to_str(tmpl_code, env=variables)
     elif tmpl_path:
       return engine._render(name, env=variables)
     else:
@@ -690,7 +690,7 @@ class Session(object):
 
   ##############################################################################
 
-  def module_control(self):
+  def module_control(self,app_doc):
     if self.pref_manager:
       return self.pref_manager.get(app_doc).get("module_control", {});
     else:
@@ -712,7 +712,7 @@ class Session(object):
     else:
       app_doc = "mobile"
 
-    module_control = self.module_control()
+    module_control = self.module_control(app_doc)
 
     for i in self.app.module_js_load_order:
       mod = self.app.module_status.get(i,{})
