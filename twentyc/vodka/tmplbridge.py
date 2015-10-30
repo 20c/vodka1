@@ -99,8 +99,6 @@ class TmplBridge:
     # user session id
     self.auth_id = ses.auth_id
 
-    self.errors = []
- 
     if not ignoreExpiry:
       self.reset_expiry()
 
@@ -109,6 +107,10 @@ class TmplBridge:
     #set up locale
 
     locale.setlocale(locale.LC_ALL, '')
+
+  @property
+  def errors(self):
+    return self.ses.get_errors()
 
   ##############################################################################
 

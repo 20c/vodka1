@@ -487,7 +487,6 @@ class Session(object):
   ##############################################################################
 
   def auth_success(self, res):
-    print "AUTH_SUCCESS: %s" % res
     self.auth_data['result'] = res
     self.auth_id = res
     self.auth_finalize()
@@ -498,7 +497,6 @@ class Session(object):
   ##############################################################################
 
   def auth_error(self, error):
-    print "AUTH ERROR: %s" % error
     self.error(error)
     self.auth_cancel()
     webapp.log.error(traceback.format_exc())
@@ -506,7 +504,6 @@ class Session(object):
   ##############################################################################
 
   def auth_cancel(self):
-    print "AUTH_CANCEL"
     self.auth_status = AUTH_IDLE
     self.auth_data = None
     self.auth_id = None
@@ -530,7 +527,6 @@ class Session(object):
 
   def auth_start(self, **kwargs):
     if not self.auth_working():
-      print "AUTH_START: %s" % kwargs
       self.auth_status = AUTH_PROCESSING
       self.auth_data = kwargs
       self.auth_data.update(start_t=time.time())
@@ -544,7 +540,6 @@ class Session(object):
   ##############################################################################
 
   def auth_finalize(self):
-    print "AUTH_FINALIZE: %s" % self.auth_data
     for fn in AUTH_FINALIZE:
       try:
         fn(self, self.auth_data) 
@@ -561,7 +556,6 @@ class Session(object):
   ##############################################################################
 
   def auth_clear(self):
-    print 'AUTH_CLEAR'
     t = RunInThread(self.auth_clear_process)
     t.start()
 
@@ -616,8 +610,7 @@ class Session(object):
       # then check in the module template cache
       elif self.app.templates.has_key("%s.%s" % (namespace, name)):
         tmpl_code = self.app.templates.get("%s.%s" % (namespace, name))
-
-    
+     
     if type(tmpl_code) == list:
       tmpl_path = os.path.dirname(tmpl_code[0])
       tmpl_code = None
