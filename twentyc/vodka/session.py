@@ -349,9 +349,6 @@ class Session(object):
     brand (str)
     locale (locale object)
     user (str), username
-
-    tQuoteBoardRefresh (datetime), last time the quoteboard was refreshed
-    for this user (deprecated?)
     """
 
     if "theme" in kwargs:
