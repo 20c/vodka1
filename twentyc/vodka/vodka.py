@@ -1227,10 +1227,12 @@ class VodkaApp(webapp.BaseApp):
     csrf = webapp.get_cookie(request, "csrftoken");
 
     if not csrf:
+      secure = (self.config.get("session").get("cookie_secure", "no") == "yes")
       csrfCookie = SimpleCookie()
       csrfCookie['csrftoken'] = str(webapp.uuid.uuid4()).replace('-', '')
       csrfCookie['csrftoken']['path'] = "/"
-      csrfCookie['csrftoken']['secure'] = True
+      if secure:
+        csrfCookie['csrftoken']['secure'] = True
       request['cookies_out']["csrftoken"] = csrfCookie;
 
     self.http_requests += 1
