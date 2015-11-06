@@ -402,10 +402,6 @@ class RPC(webapp.BaseApp):
     isMain = int(kwargs.get("__main",1))
     fullUpdate = kwargs.has_key("__full")
 
-    #if bridge.zw.client.status != 2:
-    #  ses.forceExpire = True
-    #  raise webapp.HTTPError(401)
-    
     try:
      
       ##webapp.clear_kwargs(kwargs)
@@ -446,9 +442,12 @@ class RPC(webapp.BaseApp):
                 section = generate_update_section(ok, v, func(v), ses, bridge)
 
               else:
-                for n in v:
-                  n = parse_update_specs(n)
-                  rv["update"].append(generate_update_section(ok, n, func(n), ses, bridge))
+                if getattr(func, "combine", False):
+                  rv["update"].append(generate_update_section(ok, v, func([parse_update_specs(n) for n in v]), ses, bridge))
+                else:
+                  for n in v:
+                    n = parse_update_specs(n)
+                    rv["update"].append(generate_update_section(ok, n, func(n), ses, bridge))
             else:
               section = generate_update_section(ok, None, func(), ses, bridge)
           
