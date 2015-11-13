@@ -27,6 +27,7 @@ class NamespacePermsReceiver(replication.Receiver):
     self.module_manager.disable_perms_log = True
 
   def handle_save_GroupPermission(self, docname, id, doc):
+    print docname, doc
     self.module_manager.pgroup_perms_set(
       doc.get("group").get("name"),
       doc.get("namespace"),
@@ -68,7 +69,7 @@ class NamespacePermsReceiver(replication.Receiver):
         reason="xbahn replication"
       )
 
-  def handle_save_UserGroup(self, docname, id, doc):
+  def handle_save_User_groups(self, docname, id, doc):
     t = time.time()
     self.module_manager.pgroup_grant(
       doc.get("group").get("name"),
@@ -79,7 +80,7 @@ class NamespacePermsReceiver(replication.Receiver):
     t2 = time.time()
     print "Assign group: %s %s %.5f" % (doc.get("group").get("name"), doc.get("user"), (t2-t))
 
-  def handle_delete_UserGroup(self, docname, ids, docs):
+  def handle_delete_User_groups(self, docname, ids, docs):
     for id, doc in docs.items():
       t = time.time()
       self.module_manager.pgroup_revoke(
