@@ -413,6 +413,8 @@ class ModuleManager(object):
           mod["validator"].remove(component_name)
         elif component.get("mime") == "text/vodka-template":
           mod["template"].remove(component_name)
+        elif component.get("mime") == "text/json":
+          mod["data"].remove(component_name)
         else:
           mod["media"].remove(component_name)
 
