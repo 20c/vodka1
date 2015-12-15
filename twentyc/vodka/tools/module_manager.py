@@ -363,6 +363,8 @@ class ModuleManager(object):
         list_name = "validator"
       elif mime == "text/vodka-template":
         list_name = "template"
+      elif mime == "text/json":
+        list_name = "data"
       else:
         list_name = "media"
         contents = base64.b64encode(contents)
