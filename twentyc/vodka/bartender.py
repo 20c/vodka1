@@ -13,6 +13,8 @@ except ImportError:
   print "xBahn module not found in this python environment running without"
 
 from twentyc.vodka.util import instance_id_from_config
+from twentyc.vodka.tools import module_manager
+from twentyc.database.base import ClientFromConfig as DBClient 
 
 cli.DEBUG = True
 
@@ -26,6 +28,7 @@ class Bartender(cli.CLIEnv):
   def __init__(self):
     cli.CLIEnv.__init__(self, name="bartender")
     self.target = {}
+    self.databases = {}
 
   def custom_options(self):
     cli.CLIEnv.custom_options(self)
@@ -37,6 +40,16 @@ class Bartender(cli.CLIEnv):
     self.optparse.add_option("--with-bootstrap", dest="with_bootstrap", action="store_true", help="Install bootstrap libs")
     self.optparse.add_option("--with-jquery", dest="with_jquery", action="store_true", help="Install jquery base lib")
 
+  def database(self, name):
+    if name not in self.databases:
+      self.databases[name] = DBClient("couchdb", self.config.get("db_%s"%name, self.config.get("couchdb")), name)
+    return self.databases[name]
+
+  def module_manager(self): 
+    if not hasattr(self, "module_manager_inst"):
+      self.module_manager_inst = module_manager.ModuleManager();
+      self.module_manager_inst.set_database(self.database("modules"))
+    return self.module_manager_inst
 
   def need_config_file(self):
     if self.run_command in ['install']:
@@ -72,8 +85,13 @@ class Bartender(cli.CLIEnv):
           fn(" ".join(self.args[1:]))
         else:
           fn("")
+        self.do_exit(True)
       else:
-        raise cli.InvalidCommand(cmd)
+        try:
+          raise cli.InvalidCommand(cmd)
+        except Exception, inst:
+          print inst
+          self.do_exit(True)
 
   #############################################################################
 
@@ -547,5 +565,30 @@ class Bartender(cli.CLIEnv):
   def do_exit(self, s):
     self.shutdown()
     return True
+  
+  def help_update_module_document(self):
+    print "Update a module document (such as a media file) to vodka DB"
+    print "Usage: update_module_document <mod_namespace>.<mod_name> <document_name> <file_path>"
+
+  def do_update_module_document(self, args):
+    args = args.split(" ")
+    if len(args) != 3:
+      return self.help_update_module_document()
+    mod_man = self.module_manager() 
+    ns,mn = args[0].split(".")
+    dn = args[1]
+    file_path = args[2]
+
+    with open(file_path, "r") as f:
+      comp = f.read()
+
+    if comp:
+      mod_man.module_remove_component(ns, mn, dn)
+      mod_man.module_add_component(ns, mn, dn, comp, "text/json")
+      print "Updated %s.%s.%s from %s" % (ns,mn,dn,file_path)
+    else:
+      print "File at '%s' was empty... nothing was done." % file_path
+      
+      
 
   do_EOF = do_exit
