@@ -30,6 +30,21 @@ def import_template(man, namespace, mod, file, path, theme=None):
   )
   f.close()
 
+def import_datafile(man, namespace, mod, file, path, theme=None):
+  if theme:
+    file = "%s.%s" % (theme, file)
+
+  print "Importing datafile component for module %s.%s: %s" % (
+    namespace, mod, file
+  ) 
+  f = open(path, "r")
+
+  man.module_add_component(
+    namespace, mod, file, f.read(), "text/json"
+  )
+  f.close()
+
+
 
 if __name__ == "__main__":
 
@@ -206,6 +221,23 @@ if __name__ == "__main__":
                 import_template(man, namespace, mod, t_file, os.path.join(template_file_path, t_file), theme=file)
             else:
               import_template(man, namespace. mod, file, template_file_path)
+
+        # load data from directory
+        datafile_path = os.path.join(dir, "data")
+        if os.path.exists(datafile_path):
+          for file in os.listdir(datafile_path):
+            if file[0] == ".":
+              continue
+
+            datafile_file_path = os.path.join(datafile_path, file)
+            if os.path.isdir(datafile_file_path):
+              for t_file in os.listdir(datafile_file_path):
+                if t_file[0] == ".":
+                  continue
+                import_datafile(man, namespace, mod, t_file, os.path.join(datafile_file_path, t_file), theme=file)
+            else:
+              import_datafile(man, namespace, mod, file, datafile_file_path)
+
 
         # check if module has couchdb design docs that may need to be updated
         design_path = os.path.join(dir, "design")
