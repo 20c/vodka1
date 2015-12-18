@@ -409,7 +409,7 @@ class VodkaApp(webapp.BaseApp):
     
       # connect database client
       self.couch_engine = serverConf.get("couch_engine", "couchdb")
-      self.couch_config = self.config.get(self.couch_engine)
+      self.couch_config = self.config.get(self.couch_engine, {})
 
       self.info("Using database: %s" % self.couch_engine)
      
