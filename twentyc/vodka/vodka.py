@@ -528,7 +528,8 @@ class VodkaApp(webapp.BaseApp):
 
       self.lib_includes_js = self.config.get("includes",{}).get("js","")
       if self.lib_includes_js:
-        self.lib_includes_js = self.lib_includes_js.split(",")
+        if type(self.lib_includes_js) == str:
+          self.lib_includes_js = self.lib_includes_js.split(",")
       else:
         self.lib_includes_js = []
 
@@ -538,7 +539,10 @@ class VodkaApp(webapp.BaseApp):
       
       self.lib_includes_css = self.config.get("includes",{}).get("css","")
       if self.lib_includes_css:
-        self.lib_includes_css = self.lib_includes_css.split(",")
+        if type(self.lib_includes_css) == str:
+          self.lib_includes_css = self.lib_includes_css.split(",")
+      else:
+        self.lib_includes_css = []
  
       self.info("%d templates initialized" % (len(self.templates.keys())))
  
