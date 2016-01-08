@@ -46,7 +46,6 @@ from twentyc.tools.syslogfix import UTFFixedSysLogHandler
 import random
 import inspect
 import validator
-
 from wsgi.server import *
 
 try:
@@ -207,8 +206,6 @@ def format_path(path, request):
   return path
 webapp.format_path = format_path
 
-mcfg = webapp.dict_conf(serverConfPath).get("modules")
-
 # defines the order in which modules should be loaded on the client
 module_js_load_order =[]
 
@@ -298,7 +295,8 @@ class VodkaApp(webapp.BaseApp):
     different to VodkaClient
     """
 
-    self.config = webapp.dict_conf(serverConfPath)
+    self.config = config = webapp.dict_conf(serverConfPath)
+    self.mcfg = self.config.get("modules")
     self._Client = clientClass or VodkaClient
 
     self.is_production = is_production()
@@ -958,7 +956,7 @@ class VodkaApp(webapp.BaseApp):
     dep = mod_instructions.get("dependencies",[])
 
     # dont load the module if its disabled via config
-    if mcfg.get(mod_id) == "disabled" or mcfg.get(namespace) == "disabled":
+    if self.mcfg.get(mod_id) == "disabled" or self.mcfg.get(namespace) == "disabled":
       return
  
     # load dependency modules
@@ -1051,7 +1049,7 @@ class VodkaApp(webapp.BaseApp):
         raise
 
       for name, data in modules.items():
-        if mcfg.get(name) != "disabled":
+        if self.mcfg.get(name) != "disabled":
           self.load_module(name)
     print "Modules loaded from database in %.5f" % (time.time() - t1)
 
@@ -1073,7 +1071,7 @@ class VodkaApp(webapp.BaseApp):
     mod_name = ".".join(a[1:])
      
     # if module namespace is disabled in config, bail
-    if mcfg.get(namespace) == "disabled" or mcfg.get(mod_id) == "disabled":
+    if self.mcfg.get(namespace) == "disabled" or self.mcfg.get(mod_id) == "disabled":
       return
 
     info = man.module_info(namespace, mod_name)
@@ -1355,11 +1353,11 @@ class VodkaApp(webapp.BaseApp):
           # mod has not beenm loaded into vodka yet, load it.
       
           # if module namespace is disabled in config, bail
-          if mcfg.get(mod.get("namespace")) == "disabled":
+          if self.mcfg.get(mod.get("namespace")) == "disabled":
             continue
 
           # if module is disabled
-          if mcfg.get(k) == "disabled":
+          if self.mcfg.get(k) == "disabled":
             continue
 
           # if module not approved yet
@@ -1433,7 +1431,6 @@ class VodkaApp(webapp.BaseApp):
       path = modstat.get("path_js")
       path = os.path.dirname(path)
       path = os.path.join(path, "media", file);
-      print "Checking path: %s" % path
       if path and os.path.exists(path):
         self.clear_headers(req, ["pragma","cache-control","content-type"])
         mtime = webapp.formatdate(os.path.getmtime(path))
