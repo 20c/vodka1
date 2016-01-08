@@ -25,6 +25,7 @@ from gzip import GzipFile
 import StringIO
 import websocket
 import json
+from twentyc.tools.config import dict_conf
 
 WSGI_PROFILING = False 
 
@@ -209,20 +210,6 @@ def valid_wsgi_response(obj):
     return obj
   else:
     return [str(obj)]
-
-def dict_conf(filename):
-  """
-  Return dict object for *.conf file
-  """
-  config = ConfigParser()
-  config.optionxform=str
-  config.read(filename)
-  rv = {}
-  for section in config.sections():
-    rv[section] = {}
-    for key,value in config.items(section):
-      rv[section][key] = value.strip('"').strip("'").decode("string_escape")
-  return rv
 
 def clear_kwargs(kwargs):
   try:
@@ -545,10 +532,7 @@ class RequestHandler(BaseHandler):
  
     dbg_print("Loading config: %s" % configName)
 
-    config = ConfigParser()
-    config.read(configName)
-    for section in config.sections():
-      self.config[section] = dict(config.items(section))
+    self.config = dict_conf(configName)
 
     # setup url map from config
 
