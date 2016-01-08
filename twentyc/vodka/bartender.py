@@ -110,15 +110,19 @@ class Bartender(cli.CLIEnv):
 
     self.check_config("server", "protocol")
     self.check_config("server", "couch_engine")
-    self.check_config("couchdb", "host")
-    self.check_config("couchdb", "user")
-    self.check_config("couchdb", "password")
-    self.check_config("couchdb", "db_modules")
-    self.check_config("couchdb", "db_prefs")
 
-    if self.run_command in ["setup", "install_module"]:
-      self.check_config("couchdb", "admin_user")
-      self.check_config("couchdb", "admin_password")
+    engine = self.config.get("server",{}).get("couch_engine","couchdb")
+    
+    if engine != "dummydb":
+      self.check_config(engine, "host")
+      self.check_config(engine, "user")
+      self.check_config(engine, "password")
+      self.check_config(engine, "db_modules")
+      self.check_config(engine, "db_prefs")
+
+      if self.run_command in ["setup", "install_module"]:
+        self.check_config(engine, "admin_user")
+        self.check_config(engine, "admin_password")
    
     if self.check_config("brand.default", "dir"):
       brand_dir = self.require_config("brand.default", "dir")
