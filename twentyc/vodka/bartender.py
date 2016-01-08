@@ -75,7 +75,7 @@ class Bartender(cli.CLIEnv):
     else:
       if cmd not in ["install", "help", "update", "config_template", "make_setenv_script"]:
         self.validate_config()
-        if cmd not in ["setup", "install_modules", "install_module"]:
+        if cmd not in ["setup", "install_modules", "install_module", "dump_config"]:
           self.connect_xbahn()
           self.do_ping(None)
 
@@ -589,6 +589,14 @@ class Bartender(cli.CLIEnv):
     else:
       print "File at '%s' was empty... nothing was done." % file_path
       
-      
+  def help_dump_config(self):
+    print "Dumps the currently loaded config as json"
+    print "Usage: dump_config <path>"
+
+  def do_dump_config(self, args):
+    with open(args, "w") as f:
+      json.dump(self.config, f, indent=2)
 
   do_EOF = do_exit
+
+
