@@ -1,4 +1,4 @@
-twentyc.tools==0.1.5
+twentyc.tools==0.1.6
 twentyc.database==0.1.4
 twentyc.tmpl==0.1.1
 Babel==0.9.6
