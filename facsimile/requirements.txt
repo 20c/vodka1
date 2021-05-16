@@ -6,7 +6,7 @@ Cheetah==2.4.4
 CouchDB==0.9
 python-daemon==1.6
 qpid-python==0.26
-requests==1.1.0
+requests==2.20.0
 simplejson==2.0.9
 sqlparse==0.1.11
 uWSGI==2.0.3
